@@ -57,6 +57,35 @@ Fernet Key (Keep safe!): 2jR1Jz...
 - The **password hash** is one-way and cannot be reversed (for verification only).
 - This is a demonstration script; do not hardcode or expose secrets in production.
 
+## 🔐 Login Verification Example
+
+```python
+from argon2 import exceptions  # for handling password mismatches
+
+# Simulated user input at login
+input_username = "yash_naik"
+input_password = "SuperSecretPassword123"
+
+# Values fetched from "database"
+db_encrypted_username = encrypted_username
+db_hashed_password = hashed_password
+
+try:
+    # Step 1: Verify the password
+    ph.verify(db_hashed_password, input_password)
+    print("Password is correct!")
+
+    # Step 2: Decrypt the stored encrypted username
+    decrypted_username = fernet.decrypt(db_encrypted_username).decode()
+
+    # Step 3: Match decrypted username with user input
+    if decrypted_username == input_username:
+        print("Username matches! Login successful.")
+    else:
+        print("Username mismatch!")
+
+except exceptions.VerifyMismatchError:
+    print("Incorrect password!")
 ---
 
 ## 👨‍💻 Author
